@@ -84,8 +84,8 @@ CREATE TABLE tokens (
 	create_offset INT NOT NULL,
 	scope TEXT[] NOT NULL,
 	
-	FOREIGN KEY user_id REFERENCES users(id) ON DELETE RESTRICT,
-	FOREIGN KEY app_id REFERENCES applications(id) ON DELETE RESTRICT
+	FOREIGN KEY user_id REFERENCES users(id) ON DELETE CASCADE,
+	FOREIGN KEY app_id REFERENCES applications(id) ON DELETE CASCADE
 );
 
 CREATE INDEX tokens_hmac_component_index ON tokens(hmac_component);
