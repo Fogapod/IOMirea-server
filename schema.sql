@@ -14,7 +14,7 @@ CREATE TABLE messages (
 	deleted BOOL NOT NULL DEFAULT false
 	
 	FOREIGN KEY channel_id REFERENCES channels(id) ON DELETE RESTRICT,
-    FOREIGN KEY author_id REFERENCES users(id) ON DELETE RESTRICT,
+	FOREIGN KEY author_id REFERENCES users(id) ON DELETE RESTRICT,
 );
 
 CREATE INDEX messages_channel_index ON messages(channel_id);
@@ -45,9 +45,6 @@ CREATE TABLE users (
 	email TEXT NOT NULL UNIQUE,
 	password BYTEA NOT NULL,
 	verified BOOL NOT NULL DEFAULT false
-	
-	FOREIGN KEY channel_ids REFERENCES channels(id) ON DELETE RESTRICT,
-	FOREIGN KEY last_read_message_ids REFERENCES messages(id) ON DELETE RESTRICT,
 );
 
 CREATE UNIQUE users_unique_email_index ON users (email);
@@ -57,8 +54,6 @@ CREATE TABLE channels (
 	name VARCHAR(128),
 	user_ids BIGINT[] NOT NULL,
 	pinned_ids BIGINT[] NOT NULL
-	
-	FOREIGN KEY user_ids REFERENCES users(id) ON DELETE RESTRICT,
 );
 
 CREATE TABLE files (
