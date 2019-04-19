@@ -11,10 +11,10 @@ CREATE TABLE messages (
 	content VARCHAR(2048) NOT NULL,
 	encrypted BOOL NOT NULL DEFAULT false,
 	pinned BOOL NOT NULL DEFAULT false,
-	deleted BOOL NOT NULL DEFAULT false
+	deleted BOOL NOT NULL DEFAULT false,
 	
 	FOREIGN KEY channel_id REFERENCES channels(id) ON DELETE RESTRICT,
-	FOREIGN KEY author_id REFERENCES users(id) ON DELETE RESTRICT,
+	FOREIGN KEY author_id REFERENCES users(id) ON DELETE RESTRICT
 );
 
 CREATE INDEX messages_channel_index ON messages(channel_id);
@@ -62,10 +62,10 @@ CREATE TABLE files (
 	channel_id BIGINT NOT NULL,
 	name VARCHAR(128) NOT NULL,
 	mime SMALLINT NOT NULL,
-	hash UUID NOT NULL
+	hash UUID NOT NULL,
 	
 	FOREIGN KEY channel_id REFERENCES channels(id) ON DELETE RESTRICT,
-	FOREIGN KEY message_id REFERENCES messages(id) ON DELETE RESTRICT,
+	FOREIGN KEY message_id REFERENCES messages(id) ON DELETE RESTRICT
 );
 
 CREATE TABLE bugreports (
@@ -74,7 +74,7 @@ CREATE TABLE bugreports (
 	report_body TEXT NOT NULL,
 	device_info TEXT NOT NULL,
 	
-	FOREIGN KEY user_id REFERENCES users(id) ON DELETE RESTRICT,
+	FOREIGN KEY user_id REFERENCES users(id) ON DELETE RESTRICT
 );
 
 CREATE TABLE tokens (
@@ -82,10 +82,10 @@ CREATE TABLE tokens (
 	user_id BIGINT NOT NULL,
 	app_id BIGINT NOT NULL,
 	create_offset INT NOT NULL,
-	scope TEXT[] NOT NULL
+	scope TEXT[] NOT NULL,
 	
 	FOREIGN KEY user_id REFERENCES users(id) ON DELETE RESTRICT,
-	FOREIGN KEY app_id REFERENCES applications(id) ON DELETE RESTRICT,
+	FOREIGN KEY app_id REFERENCES applications(id) ON DELETE RESTRICT
 );
 
 CREATE INDEX tokens_hmac_component_index ON tokens(hmac_component);
