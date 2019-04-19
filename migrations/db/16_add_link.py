@@ -31,7 +31,7 @@ class Migration(DBMigration):
 			ALTER TABLE users ADD CONSTRAINT users_lastreadmessageids_fkey FOREIGN KEY (last_read_message_ids) REFERENCES messages(id);
 			
 			ALTER TABLE channels ADD CONSTRAINT channels_userids_fkey FOREIGN KEY (user_ids) REFERENCES users(id);
-			ALTER TABLE channels ADD CONSTRAINT channels_pinnedids_fkeyFOREIGN KEY (pinned_ids) REFERENCES messages(id);
+			ALTER TABLE channels ADD CONSTRAINT channels_pinnedids_fkey FOREIGN KEY (pinned_ids) REFERENCES messages(id);
 			
 			ALTER TABLE files ADD CONSTRAINT files_channelid_fkey FOREIGN KEY (channel_id) REFERENCES channels(id);
 			ALTER TABLE files ADD CONSTRAINT files_messageid_fkey FOREIGN KEY (message_id) REFERENCES messages(id);
