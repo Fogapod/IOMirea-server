@@ -31,7 +31,7 @@ class Migration(DBMigration):
                                                                                                                                                                                     
             ALTER TABLE bugreports ADD CONSTRAINT bugreports_userid_fkey FOREIGN KEY (user_id) REFERENCES users(id);
    
-            ALTER TABLE tokens ADD CONSTRAINT tokens_userid_fkey FOREIGN KEY (user_id) REFERENCES users(id);
+            ALTER TABLE tokens ADD CONSTRAINT tokens_userid_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
             ALTER TABLE tokens ADD CONSTRAINT tokens_appid_fkey FOREIGN KEY (app_id) REFERENCES applications(id) ON DELETE CASCADE;
             """
                                                                                                                                                                                                                                                         )
