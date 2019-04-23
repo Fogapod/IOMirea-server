@@ -3,14 +3,6 @@ CREATE TABLE versions (
 	name TEXT PRIMARY KEY NOT NULL
 );
 
-CREATE TABLE applications (
-	id BIGINT PRIMARY KEY NOT NULL,
-	owner_id BIGING NOT NULL,
-	secret TEXT NOT NULL,
-	redirect_uri TEXT NOT NULL,
-	name VARCHAR(256) NOT NULL
-);
-
 CREATE TABLE channels (
 	id BIGINT PRIMARY KEY NOT NULL,
 	name VARCHAR(128),
@@ -27,6 +19,16 @@ CREATE TABLE users (
 	email TEXT NOT NULL UNIQUE,
 	password BYTEA NOT NULL,
 	verified BOOL NOT NULL DEFAULT false
+);
+
+CREATE TABLE applications (
+	id BIGINT PRIMARY KEY NOT NULL,
+	owner_id BIGING NOT NULL,
+	secret TEXT NOT NULL,
+	redirect_uri TEXT NOT NULL,
+	name VARCHAR(256) NOT NULL,
+	
+	FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE RESTRICT
 );
 
 CREATE TABLE messages (
