@@ -28,6 +28,8 @@ class Migration(DBMigration):
                                
             ALTER TABLE files ADD CONSTRAINT files_channelid_fkey FOREIGN KEY (channel_id) REFERENCES channels(id);
             ALTER TABLE files ADD CONSTRAINT files_messageid_fkey FOREIGN KEY (message_id) REFERENCES messages(id);
+            
+            ALTER TABLE applications ADD CONSTRAINT tokens_ownerapplicationsid_fkey FOREIGN KEY (owner_id) REFERENCES users(id);
                                                                                                                                                                                     
             ALTER TABLE bugreports ADD CONSTRAINT bugreports_userid_fkey FOREIGN KEY (user_id) REFERENCES users(id);
    
