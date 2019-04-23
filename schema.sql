@@ -3,6 +3,32 @@ CREATE TABLE versions (
 	name TEXT PRIMARY KEY NOT NULL
 );
 
+CREATE TABLE applications (
+	id BIGINT PRIMARY KEY NOT NULL,
+	owner_id BIGING NOT NULL,
+	secret TEXT NOT NULL,
+	redirect_uri TEXT NOT NULL,
+	name VARCHAR(256) NOT NULL
+);
+
+CREATE TABLE channels (
+	id BIGINT PRIMARY KEY NOT NULL,
+	name VARCHAR(128),
+	user_ids BIGINT[] NOT NULL,
+	pinned_ids BIGINT[] NOT NULL
+);
+
+CREATE TABLE users (
+	id BIGINT PRIMARY KEY NOT NULL,
+	name VARCHAR(128) NOT NULL,
+	channel_ids BIGINT[] NOT NULL DEFAULT ARRAY[]::BIGINT[],
+	last_read_message_ids BIGINT[] NOT NULL DEFAULT ARRAY[]::BIGINT[],
+	bot BOOL NOT NULL,
+	email TEXT NOT NULL UNIQUE,
+	password BYTEA NOT NULL,
+	verified BOOL NOT NULL DEFAULT false
+);
+
 CREATE TABLE messages (
 	id BIGINT PRIMARY KEY NOT NULL,
 	edit_id BIGINT,
@@ -13,8 +39,8 @@ CREATE TABLE messages (
 	pinned BOOL NOT NULL DEFAULT false,
 	deleted BOOL NOT NULL DEFAULT false,
 	
-	FOREIGN KEY channel_id REFERENCES channels(id) ON DELETE RESTRICT,
-	FOREIGN KEY author_id REFERENCES users(id) ON DELETE RESTRICT
+	FOREIGN KEY (channel_id) REFERENCES channels(id) ON DELETE RESTRICT,
+	FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE RESTRICT
 );
 
 CREATE INDEX messages_channel_index ON messages(channel_id);
@@ -36,25 +62,7 @@ CREATE VIEW messages_with_author AS
   INNER JOIN users usr
   ON msg.author_id = usr.id;
 
-CREATE TABLE users (
-	id BIGINT PRIMARY KEY NOT NULL,
-	name VARCHAR(128) NOT NULL,
-	channel_ids BIGINT[] NOT NULL DEFAULT ARRAY[]::BIGINT[],
-	last_read_message_ids BIGINT[] NOT NULL DEFAULT ARRAY[]::BIGINT[],
-	bot BOOL NOT NULL,
-	email TEXT NOT NULL UNIQUE,
-	password BYTEA NOT NULL,
-	verified BOOL NOT NULL DEFAULT false
-);
-
 CREATE UNIQUE users_unique_email_index ON users (email);
-
-CREATE TABLE channels (
-	id BIGINT PRIMARY KEY NOT NULL,
-	name VARCHAR(128),
-	user_ids BIGINT[] NOT NULL,
-	pinned_ids BIGINT[] NOT NULL
-);
 
 CREATE TABLE files (
 	id BIGINT PRIMARY KEY NOT NULL,
@@ -64,8 +72,8 @@ CREATE TABLE files (
 	mime SMALLINT NOT NULL,
 	hash UUID NOT NULL,
 	
-	FOREIGN KEY channel_id REFERENCES channels(id) ON DELETE RESTRICT,
-	FOREIGN KEY message_id REFERENCES messages(id) ON DELETE RESTRICT
+	FOREIGN KEY (channel_id) REFERENCES channels(id) ON DELETE RESTRICT,
+	FOREIGN KEY (message_id) REFERENCES messages(id) ON DELETE RESTRICT
 );
 
 CREATE TABLE bugreports (
@@ -74,7 +82,7 @@ CREATE TABLE bugreports (
 	report_body TEXT NOT NULL,
 	device_info TEXT NOT NULL,
 	
-	FOREIGN KEY user_id REFERENCES users(id) ON DELETE RESTRICT
+	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE RESTRICT
 );
 
 CREATE TABLE tokens (
@@ -84,19 +92,11 @@ CREATE TABLE tokens (
 	create_offset INT NOT NULL,
 	scope TEXT[] NOT NULL,
 	
-	FOREIGN KEY user_id REFERENCES users(id) ON DELETE CASCADE,
-	FOREIGN KEY app_id REFERENCES applications(id) ON DELETE CASCADE
+	FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+	FOREIGN KEY (app_id) REFERENCES applications(id) ON DELETE CASCADE
 );
 
 CREATE INDEX tokens_hmac_component_index ON tokens(hmac_component);
-
-CREATE TABLE applications (
-	id BIGINT PRIMARY KEY NOT NULL,
-	owner_id BIGING NOT NULL,
-	secret TEXT NOT NULL,
-	redirect_uri TEXT NOT NULL,
-	name VARCHAR(256) NOT NULL
-);
 
 CREATE VIEW applications_with_owner AS
   SELECT
