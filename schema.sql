@@ -28,7 +28,7 @@ CREATE TABLE applications (
 	redirect_uri TEXT NOT NULL,
 	name VARCHAR(256) NOT NULL,
 	
-	FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE RESTRICT
+	FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE messages (
