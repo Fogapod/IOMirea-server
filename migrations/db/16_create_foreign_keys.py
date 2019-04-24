@@ -23,18 +23,18 @@ class Migration(DBMigration):
     async def up(self, latest: int) -> None:
         await self.conn.execute(
             """
-            ALTER TABLE messages ADD CONSTRAINT messages_channelid_fkey FOREIGN KEY (channel_id) REFERENCES channels(id);
-            ALTER TABLE messages ADD CONSTRAINT messages_authorid_fkey FOREIGN KEY (author_id) REFERENCES users(id);
+            ALTER TABLE messages ADD CONSTRAINT messages_channel_id_fkey FOREIGN KEY (channel_id) REFERENCES channels(id);
+            ALTER TABLE messages ADD CONSTRAINT messages_author_id_fkey FOREIGN KEY (author_id) REFERENCES users(id);
                                
-            ALTER TABLE files ADD CONSTRAINT files_channelid_fkey FOREIGN KEY (channel_id) REFERENCES channels(id);
-            ALTER TABLE files ADD CONSTRAINT files_messageid_fkey FOREIGN KEY (message_id) REFERENCES messages(id);
+            ALTER TABLE files ADD CONSTRAINT files_channel_id_fkey FOREIGN KEY (channel_id) REFERENCES channels(id);
+            ALTER TABLE files ADD CONSTRAINT files_message_id_fkey FOREIGN KEY (message_id) REFERENCES messages(id);
             
-            ALTER TABLE applications ADD CONSTRAINT tokens_ownerapplicationsid_fkey FOREIGN KEY (owner_id) REFERENCES users(id);
+            ALTER TABLE applications ADD CONSTRAINT tokens_owner_applications_id_fkey FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE;
                                                                                                                                                                                     
-            ALTER TABLE bugreports ADD CONSTRAINT bugreports_userid_fkey FOREIGN KEY (user_id) REFERENCES users(id);
+            ALTER TABLE bugreports ADD CONSTRAINT bugreports_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id);
    
-            ALTER TABLE tokens ADD CONSTRAINT tokens_userid_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
-            ALTER TABLE tokens ADD CONSTRAINT tokens_appid_fkey FOREIGN KEY (app_id) REFERENCES applications(id) ON DELETE CASCADE;
+            ALTER TABLE tokens ADD CONSTRAINT tokens_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+            ALTER TABLE tokens ADD CONSTRAINT tokens_app_id_fkey FOREIGN KEY (app_id) REFERENCES applications(id) ON DELETE CASCADE;
             """
                                                                                                                                                                                                                                                         )
                     
