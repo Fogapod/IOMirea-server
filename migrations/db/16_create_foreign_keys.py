@@ -29,7 +29,7 @@ class Migration(DBMigration):
             ALTER TABLE files ADD CONSTRAINT files_channel_id_fkey FOREIGN KEY (channel_id) REFERENCES channels(id);
             ALTER TABLE files ADD CONSTRAINT files_message_id_fkey FOREIGN KEY (message_id) REFERENCES messages(id);
             
-            ALTER TABLE applications ADD CONSTRAINT tokens_owner_applications_id_fkey FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE;
+            ALTER TABLE applications ADD CONSTRAINT applications_owner_id_fkey FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE;
                                                                                                                                                                                     
             ALTER TABLE bugreports ADD CONSTRAINT bugreports_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(id);
    
