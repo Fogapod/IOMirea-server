@@ -12,6 +12,7 @@ services:
       - migration
       - postgres
       - redis
+    restart: always
     deploy:
       restart_policy:
         condition: always
@@ -19,10 +20,24 @@ services:
   migration:
     image: app
     command: python migrations/migrate.py
-    links:
-      - postgres
     depends_on:
       - postgres
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/proxy_params:/etc/nginx/proxy_params
+      - ./nginx/mime.types:/etc/nginx/mime.types
+      - ./nginx/sites-enabled:/etc/nginx/sites-enabled
+      - ./nginx/sites-available:/etc/nginx/sites-available
+      - /etc/letsencrypt:/etc/letsencrypt
+      - ./iomirea/static:/www/static
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    depends_on:
+     - iomirea_server_app
   redis:
     image: redis
     ports:
