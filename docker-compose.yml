@@ -19,8 +19,6 @@ services:
   migration:
     image: app
     command: python migrations/migrate.py
-    volumes:
-      - .:/code
     links:
       - postgres
     depends_on:
